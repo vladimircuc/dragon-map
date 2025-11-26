@@ -46,7 +46,7 @@ while read -r ip; do
     base_dn=""
 
     ############################################################
-    # 1) RUSTSCAN (TCP) — same style as oscp_enum.sh
+    # 1) RUSTSCAN (TCP)
     ############################################################
     raw_rust="$raw_dir/rust.txt"
     rust_cmd="rust -a \"$ip\" -- -A -v -oN \"$raw_rust\""
@@ -65,7 +65,7 @@ while read -r ip; do
     } > "$rust_out"
 
     ############################################################
-    # 2) UDP TOP-100 (nmap) — same style as oscp_enum.sh
+    # 2) UDP TOP-100 (nmap)
     ############################################################
     raw_udp="$raw_dir/udp.txt"
     udp_cmd="nmap -Pn -n \"$ip\" -sU --top-ports 100 -v -oN \"$raw_udp\""
@@ -100,7 +100,7 @@ while read -r ip; do
     udp_full="$(cat "$raw_udp" 2>/dev/null || true)"  # maybe useful for DNS over UDP
 
     ############################################################
-    # 5) SMB ENUM (with creds + anon + nxc)
+    # 5) SMB ENUM (with creds + nxc)
     ############################################################
     if echo "$services" | grep -E '\|smb|\|microsoft-ds|\|netbios' >/dev/null \
        || echo "$rust_full" | grep -E '^445/tcp\s+open|^139/tcp\s+open' >/dev/null; then
